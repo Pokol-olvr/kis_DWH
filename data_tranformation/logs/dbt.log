@@ -1,0 +1,37 @@
+==================== 2026-04-01T20:08:20.762662Z | 019d4aa9-4616-7860-9cdb-053e0e2eebf4 ====================
+20:08:20.762872 [info ]: Installing dbt project and profile setup
+20:08:20.792271 [info ]: Info Created .vscode/extensions.json with dbt extension recommendation
+20:08:20.792840 [info ]: Success Project created successfully!
+20:08:20.793137 [info ]: Info Project name: jaffle_shop
+20:08:20.793385 [info ]: Info Project directory: jaffle_shop
+20:08:20.793679 [info ]: Info Setting up your profile...
+20:08:20.794887 [info ]: Loading ~/.dbt/profiles.yml
+20:08:20.798118 [info ]: Profile 'jaffle_shop' already exists. You can choose how to proceed.
+20:08:45.101572 [info ]: Info Profile setup cancelled.
+20:08:45.101902 [info ]: Validating profile inputs, adapters, and connection
+
+20:08:45.102149 [info ]: dbt-fusion 2.0.0-preview.114
+20:08:45.103070 [info ]: Started loading project
+20:08:45.104473 [info ]: Loading ~/.dbt/profiles.yml
+20:08:45.105784 [info ]: Finished loading project [  0.00s]
+20:08:45.106004 [info ]: Started debugging
+20:08:45.106091 [info ]: Debugging profile: dev
+20:08:45.106210 [info ]: Debugging dbt version: 2.0.0-preview.114
+20:08:45.106329 [info ]: Debugging platform: windows x86_64 (windows)
+20:08:45.106489 [info ]: Debugging adapter type: bigquery (remote)
+20:08:45.147911 [info ]: Debugging dependencies:
+  git: OK
+20:08:45.149645 [info ]: Debugging connection:
+  "database": "dbt-bolondozas",
+  "schema": "dogdev_raw",
+  "method": "service-account",
+  "dataproc_batch": null
+20:08:51.095372 [debug]: Query executed on node unknown:
+select 1 as id
+20:08:51.102428 [info ]: Debugging connection test: OK
+20:08:51.104158 [info ]: Debugged All checks passed!
+20:08:51.105009 [info ]: Finished debugging [  6.00s]
+20:08:51.622138 [info ]: New version available 2.0.0-preview.164 (run `dbt system update`)
+20:08:51.743098 [info ]: 
+==================== Execution Summary =====================
+Finished 'init' successfully for target 'dev' [31.0s]
