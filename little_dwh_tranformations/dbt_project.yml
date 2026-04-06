@@ -17,5 +17,16 @@ clean-targets:
 models:
   little_dwh_tranformations:
 
-    example:
-      +materialized: view
+    staging:
+      +schema: stage
+      +materialized: view    
+
+
+    vault:
+      +schema: vault
+      +materialized: incremental 
+
+
+    mart:
+      +schema: mart
+      +materialized: table  

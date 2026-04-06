@@ -1,3 +1,21 @@
+version: '3.8'
+
+x-airflow-common: &airflow-common
+  build: .
+  env_file: .env
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./little_dwh_tranformations:/opt/airflow/dbt
+    - ./logs:/opt/airflow/logs
+  depends_on:
+    postgres-airflow-meta:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  networks: 
+    - postgres_network
+      
+
 services:
   postgres:
     image: postgres:18-alpine
@@ -13,10 +31,60 @@ services:
     ports:
       - "5433:5432" 
     networks:
+      - postgres_network  
+  
+  postgres-airflow-meta:
+    image: postgres:13
+    volumes:
+      - postgres-meta-data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_META_DB}
+      POSTGRES_USER: ${POSTGRES_META_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_META_PASSWORD}  
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_META_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
       - postgres_network
+
+  redis:
+    image: redis:latest
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:                 
+      - postgres_network
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - 8080:8080
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+
+  airflow-worker:
+    <<: *airflow-common
+    command: celery worker
+
+  airflow-init:
+    <<: *airflow-common
+    command: >
+      bash -c "airflow db migrate &&
+      airflow users create --username admin --password admin --firstname DWH --lastname Admin --role Admin --email admin@admin.com"
 
 volumes:
   postgresql_data:
+    driver: local
+  postgres-meta-data:
     driver: local
 
 networks:
